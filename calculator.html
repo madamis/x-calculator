@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calc</title>
+
+    <script src="https://cdn.jsdelivr.net/npm/alpinejs@2.8.2/dist/alpine.js" defer></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-blue-100 text-center">
+    <div x-data="
+    {
+        buttons: ['1','2','3','*','4','5','6','/','7','8','9','+','.','0','=','-'],
+        operations: '',
+        result:'',
+        memory: 'mem',
+        calculation(button)
+        {
+            if(button == '=')
+            {
+                try{
+                    this.result = eval(this.operations)
+                    this.memory = this.operations
+                    this.operations = ''
+                }catch(e){
+                    console.log(error)
+                    this.result = 'invalid expression.'
+                }
+            }
+            else
+            {
+                this.operations += button;
+            }
+        }
+    }
+    " class="border border-blue-300 bg-blue-200 mx-auto mt-10 hover:border-blue-500 max-w-md">
+        <div class="screen my-5">
+            <input x-model="memory" type="text" class="memory bg-blue-200 pb-3 text-gray-500">
+            <input x-model="operations" type="text" class="text-lg py-2 px-3 border-none  focus:border-none focus:ring-2 text-right focus:ring-blue-500">
+            <input x-model="result" type="text" class="text-lg text-right border-0 py-2 px-3">
+        </div>
+        <div class="keypad mb-5">
+            <template x-for="(button, index) in buttons" :key="button">
+                <span>
+                    <button class="bg-blue-500 hover:bg-blue-700 text-gray-50 hover:text-yellow-500 px-3 py-2 rounded-xl border border-yellow-500 hover:border-yellow-700 text-xl m-2" x-text="button" @click="calculation(button)"></button>
+                    <br x-show="(index + 1)%4 == 0">
+                </span>
+            </template>
+        </div>
+    </div>
+</body>
+</html>
